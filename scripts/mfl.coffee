@@ -16,7 +16,9 @@
 #  Clayton Dukes cdffl@remailed.ws
 #  Trever Shick trever@shick.io
 #
-Promise = require('promise')
+_ = require 'lodash'
+Promise = require 'promise'
+{renderLiveScoringResults} = require './formatters'
 
 leagueId = process.env.HUBOT_MFL_LEAGUE_ID
 unless leagueId
@@ -44,21 +46,20 @@ jsonGet = (robot, url) ->
           reject e
 
 teamName = (leagueData, team) ->
-  return x.name for x in leagueData.league.franchises.franchise when x.id is team.id
+  x.name for x in leagueData.league.franchises.franchise when x.id is team.id
 
 sendLiveScoringResults = (msg, leagueData, liveScoringData) ->
-  i=0
-  response = '`Live Scoring Results`\n'
-  for game in liveScoringData.liveScoring.matchup
-    for team in game.franchise
-      theTeamName = teamName(leagueData, team)
-      response += "\n```#{theTeamName}     Score: #{team.score}"
-      if team.gameSecondsRemaining > 0
-        response += "Currently Playing: #{team.playersCurrentlyPlaying} "
-        response += "Game Seconds Remaining: #{team.gameSecondsRemaining}```"
-      else
-        response += "```"
-  msg.send response
+  teams = _(liveScoringData.liveScoring.matchup)
+    .map (game) -> game.franchise
+    .flatten()
+    .map (team) ->
+      team.name = teamName(leagueData, team)
+      team.gameSecondsRemaining = parseInt(team.gameSecondsRemaining, 10)
+      team.playersCurrentlyPlaying = parseInt(team.playersCurrentlyPlaying, 10)
+      team
+    .value()
+
+  msg.send renderLiveScoringResults({"teams": teams})
 
 
 onFantasyScores = (robot, msg) ->
