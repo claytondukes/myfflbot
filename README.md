@@ -11,6 +11,7 @@ has, etc!
 [heroku]: http://www.heroku.com
 [hubot]: http://hubot.github.com
 [generator-hubot]: https://github.com/github/generator-hubot
+[hubot-slack]: https://github.com/slackhq/hubot-slack
 
 ### Running myfflbot Locally
 
