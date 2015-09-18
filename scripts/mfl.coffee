@@ -54,8 +54,8 @@ sendLiveScoringResults = (msg, leagueData, liveScoringData) ->
       theTeamName = teamName(leagueData, team)
       response += "\n```#{theTeamName}     Score: #{team.score}"
       if team.gameSecondsRemaining > 0
-        response += "Currently Playing: #{team.playersCurrentlyPlaying} "
-        response += "Game Seconds Remaining: #{team.gameSecondsRemaining}```"
+        response += " Currently Playing: #{team.playersCurrentlyPlaying}"
+        response += " Game Seconds Remaining: #{team.gameSecondsRemaining}```"
       else
         response += "```"
   msg.send response
