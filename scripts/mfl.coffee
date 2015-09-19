@@ -9,7 +9,7 @@
 #   HUBOT_MFL_LEAGUE_WEEK - the week, ordinal number
 #
 # Commands:
-#   hubot: fantasyscores - print out the fantasy scores from myfantasyleague.com
+#   hubot fantasyscores - print out the fantasy scores from myfantasyleague.com
 #
 #
 # Authors:
