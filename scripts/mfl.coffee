@@ -16,34 +16,17 @@
 #  Clayton Dukes cdffl@remailed.ws
 #  Trever Shick trever@shick.io
 #
-_ = require 'lodash'
-Promise = require 'promise'
-{renderLiveScoringResults} = require './formatters'
+_       = require 'lodash'
+Log     = require 'log'
+Config  = require './mfl-config'
 
-leagueId = process.env.HUBOT_MFL_LEAGUE_ID
-unless leagueId
-  exit "You must enter your HUBOT_MFL_LEAGUE_ID in your environment variables"
-leagueURL =  process.env.HUBOT_MFL_LEAGUE_URL
-unless leagueURL
-  exit "You must enter your HUBOT_MFL_LEAGUE_URL in your environment variables"
+{ renderLiveScoringResults } = require './mfl-formatters'
+{ getHttpJson } = require './http-promise'
 
-week = process.env.HUBOT_MFL_LEAGUE_WEEK or 1
-LIVE_SCORING_URL = "#{leagueURL}/export?TYPE=liveScoring&L=#{leagueId}&W=#{week}&JSON=1"
-OWNER_INFORMATION = "#{leagueURL}/export?TYPE=league&L=#{leagueId}&W=&JSON=1"
+config  = new Config()
+logger  = new Log(process.env.HUBOT_LOG_LEVEL or 'info')
 
-jsonGet = (robot, url) ->
-  new Promise (resolve, reject) ->
-    robot.http(url)
-      .header('Accept', 'application/json')
-      .get() (err, res, body) ->
-        if err
-          robot.logger.error e
-          reject err
-        try
-          resolve(JSON.parse(body))
-        catch e
-          robot.logger.error e
-          reject e
+
 
 teamName = (leagueData, team) ->
   x.name for x in leagueData.league.franchises.franchise when x.id is team.id
@@ -63,17 +46,17 @@ sendLiveScoringResults = (msg, leagueData, liveScoringData) ->
 
 
 onFantasyScores = (robot, msg) ->
-  robot.logger.debug "Pulling liveScoringData from #{LIVE_SCORING_URL}"
-  robot.logger.debug "Pulling leagueData from #{OWNER_INFORMATION}"
-  jsonGet(robot, OWNER_INFORMATION)
+  logger.debug "Pulling liveScoringData from #{config.liveScoringUrl}"
+  logger.debug "Pulling leagueData from #{config.ownerInformationUrl}"
+  getHttpJson(robot, config.ownerInformationUrl)
     .then (leagueData) ->
       leagueData_str = JSON.stringify leagueData
-      robot.logger.debug "onFantasyScores.jsonGet.OWNER_INFORMATION returns: #{leagueData_str}"
+      logger.debug "onFantasyScores.getHttpJson.OWNER_INFORMATION returns: #{leagueData_str}"
       return { leagueData: leagueData }
     .then (data) ->
-      jsonGet(robot, LIVE_SCORING_URL).then (liveScoringData) ->
+      getHttpJson(robot, config.liveScoringUrl).then (liveScoringData) ->
         liveScoringData_str = JSON.stringify liveScoringData
-        robot.logger.debug "onFantasyScores.jsonGet.LIVE_SCORING_URL returns: #{liveScoringData_str}"
+        logger.debug "onFantasyScores.getHttpJson.LIVE_SCORING_URL returns: #{liveScoringData_str}"
         data.liveScoringData = liveScoringData
         data
     .then (data) ->
@@ -83,14 +66,6 @@ onFantasyScores = (robot, msg) ->
 
 
 module.exports = (robot) ->
-  robot.logger.debug
-  "myfantasyleague.com League Id:          #{leagueId} (HUBOT_MFL_LEAGUE_ID)"
-  robot.logger.debug
-  "myfantasyleague.com Week:               #{week} (HUBOT_MFL_LEAGUE_WEEK)"
-  robot.logger.debug
-  "myfantasyleague.com League Data from :  #{LIVE_SCORING_URL}"
-  robot.logger.debug
-  "myfantasyleague.com Team Data from :    #{OWNER_INFORMATION}"
-
+  config.debug()
 
   robot.respond /fantasyscores/i, (msg) -> onFantasyScores(robot, msg)
