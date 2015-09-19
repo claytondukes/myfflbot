@@ -24,7 +24,9 @@
     "hubot-rules": "^0.1.1",
     "hubot-scripts": "^2.16.2",
     "hubot-shipit": "^0.2.0",
-    "promise": "^7.0.4"
+    "lodash": "^3.10.1",
+    "promise": "^7.0.4",
+    "handlebars": "^4.0.2"
   },
   "engines": {
     "node": "0.10.x"
