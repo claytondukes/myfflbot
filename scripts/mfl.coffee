@@ -18,10 +18,10 @@
 #
 _       = require 'lodash'
 Log     = require 'log'
-Config  = require './mfl-config'
+Config  = require './util/mfl-config'
 
-{ renderLiveScoringResults } = require './mfl-formatters'
-{ getHttpJson } = require './http-promise'
+{ renderLiveScoringResults } = require './util/mfl-formatters'
+{ getHttpJson } = require './util/http-promise'
 
 config  = new Config()
 logger  = new Log(process.env.HUBOT_LOG_LEVEL or 'info')

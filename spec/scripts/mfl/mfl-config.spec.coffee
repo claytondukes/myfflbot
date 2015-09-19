@@ -1,4 +1,4 @@
-Config = require '../../../scripts/mfl-config'
+Config = require '../../../scripts/util/mfl-config'
 
 describe 'mfl-config', ->
   describe 'leagueId', ->

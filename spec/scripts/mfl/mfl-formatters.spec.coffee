@@ -1,4 +1,4 @@
-{ renderLiveScoringResults } = require '../../../scripts/mfl-formatters'
+{ renderLiveScoringResults } = require '../../../scripts/util/mfl-formatters'
 
 describe 'formatters', ->
 

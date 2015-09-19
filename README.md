@@ -34,3 +34,22 @@ Then you can interact with myfflbot by typing `myfflbot help`.
     myfflbot livescoring
     myfflbot help - Displays all of the help commands that myfflbot knows about.
     ...
+
+### Testing myfflbot's Hubot Compatibility
+
+(excerpts from https://hubot.github.com/docs/)
+
+    # link this repo to the local npm repository
+    % git clone <this_repo>
+    % cd myfflbot
+    % npm link
+
+    # create a fresh hubot install
+    % npm install -g yo generator-hubot
+    % mkdir myhubot
+    % cd myhubot
+    % yo hubot
+
+    % npm link myfflbot # points this hubot to the local repo for myfflbot
+    # add "myfflbot": "1.0.0" to dependencies in package.json
+    % bin/hubot
