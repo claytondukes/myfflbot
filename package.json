@@ -2,7 +2,10 @@
   "name": "ffbot",
   "version": "0.0.0",
   "private": true,
-  "author": "Trever Shick <trevershick@gmail.com>",
+  "author": "Clayton Dukes <cdffl@remailed.ws>",
+  "contributors" : [
+    { "name":"Trever Shick", "email":"trever@shick.io" }
+  ],
   "description": "Get fantasy football scores through hubot.",
   "dependencies": {
     "hubot": "^2.16.0",
