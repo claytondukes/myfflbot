@@ -4,7 +4,15 @@ class Msg
 class Robot
   constructor: ->
     @responders = []
+    @https = []
+
   http: ->
+    ret = @https.pop()
+    ret
+
+  expectHttpAndRespond: (opts) ->
+    @https.splice(0, 0, new Http(opts))
+
   respond: (regex, responderFunction) ->
     @responders.push {regex: regex, func: responderFunction}
 
@@ -23,11 +31,14 @@ class Robot
     error: ->
 
 class Http
-  constructor: (responseBody) ->
-    @responseBody = responseBody
+  constructor: (opts) ->
+    @responseBody = opts.body || null
+    @responseErr = opts.err || null
+
   header: -> this
+
   get: -> (callback) =>
-    callback(null,null,@responseBody)
+    callback(@responseErr,@response,@responseBody)
 
 module.exports =
   Msg: Msg

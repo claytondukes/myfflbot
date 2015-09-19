@@ -3,13 +3,16 @@
   "version": "0.0.0",
   "private": true,
   "author": "Clayton Dukes <cdffl@remailed.ws>",
-  "contributors" : [
-    { "name":"Trever Shick", "email":"trever@shick.io" }
+  "contributors": [
+    {
+      "name": "Trever Shick",
+      "email": "trever@shick.io"
+    }
   ],
   "description": "Get fantasy football scores through hubot.",
   "scripts": {
     "start": "bin/hubot",
-    "test": "node_modules/jasmine/bin/jasmine.js"
+    "test": "node jasmine-runner.js"
   },
   "dependencies": {
     "hubot": "^2.16.0",
@@ -33,6 +36,7 @@
   },
   "devDependencies": {
     "coffee-script": "^1.10.0",
-    "jasmine": "^2.3.2"
+    "jasmine": "^2.3.2",
+    "jasmine-spec-reporter": "^2.4.0"
   }
 }
