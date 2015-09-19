@@ -28,7 +28,6 @@
     "hubot-scripts": "2.16.2",
     "hubot-shipit": "0.2.0",
     "lodash": "3.10.1",
-    "promise": "7.0.4",
     "handlebars": "4.0.2",
     "log": "1.4.0"
   },
@@ -38,6 +37,7 @@
   "devDependencies": {
     "coffee-script": "^1.10.0",
     "jasmine": "^2.3.2",
-    "jasmine-spec-reporter": "^2.4.0"
+    "jasmine-spec-reporter": "^2.4.0",
+    "q": "1.4.1"
   }
 }

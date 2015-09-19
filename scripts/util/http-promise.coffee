@@ -3,6 +3,7 @@ Log     = require 'log'
 logger  = new Log(process.env.HUBOT_LOG_LEVEL or 'info')
 
 getHttpJson = (robot, url) ->
+  logger.debug "Loading", url
   new Promise (resolve, reject) ->
     robot.http(url)
       .header('Accept', 'application/json')
@@ -11,6 +12,7 @@ getHttpJson = (robot, url) ->
           logger.error e
           reject err
         try
+          logger.debug "resolving http request", body
           resolve(JSON.parse(body))
         catch e
           logger.error e

@@ -19,10 +19,10 @@
 _       = require 'lodash'
 Log     = require 'log'
 Config  = require './util/mfl-config'
+Q       = require 'q'
 
 { renderLiveScoringResults } = require './util/mfl-formatters'
 { getHttpJson } = require './util/http-promise'
-
 config  = new Config()
 logger  = new Log(process.env.HUBOT_LOG_LEVEL or 'info')
 
@@ -33,7 +33,8 @@ teamName = (leagueData, team) ->
 
 sendLiveScoringResults = (msg, leagueData, liveScoringData) ->
   teams = _(liveScoringData.liveScoring.matchup)
-    .map (game) -> game.franchise
+    .map (game) ->
+      game.franchise
     .flatten()
     .map (team) ->
       team.name = teamName(leagueData, team)
@@ -48,21 +49,12 @@ sendLiveScoringResults = (msg, leagueData, liveScoringData) ->
 onFantasyScores = (robot, msg) ->
   logger.debug "Pulling liveScoringData from #{config.liveScoringUrl}"
   logger.debug "Pulling leagueData from #{config.ownerInformationUrl}"
-  getHttpJson(robot, config.ownerInformationUrl)
-    .then (leagueData) ->
-      leagueData_str = JSON.stringify leagueData
-      logger.debug "onFantasyScores.getHttpJson.OWNER_INFORMATION returns: #{leagueData_str}"
-      return { leagueData: leagueData }
-    .then (data) ->
-      getHttpJson(robot, config.liveScoringUrl).then (liveScoringData) ->
-        liveScoringData_str = JSON.stringify liveScoringData
-        logger.debug "onFantasyScores.getHttpJson.LIVE_SCORING_URL returns: #{liveScoringData_str}"
-        data.liveScoringData = liveScoringData
-        data
-    .then (data) ->
-      sendLiveScoringResults msg, data.leagueData, data.liveScoringData
-    .then null,
-      (err) -> msg.send "An error occurred in function onFantasyScores: #{err}"
+  Q.all([ getHttpJson(robot, config.ownerInformationUrl),
+          getHttpJson(robot, config.liveScoringUrl) ])
+  .then (d) ->
+    sendLiveScoringResults msg, d[0], d[1]
+  .then null,
+    (err) -> msg.send "An error occurred in function onFantasyScores: #{err}"
 
 
 module.exports = (robot) ->
