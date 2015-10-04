@@ -1,10 +1,10 @@
-Promise = require 'promise'
+Q       = require 'q'
 Log     = require 'log'
 logger  = new Log(process.env.HUBOT_LOG_LEVEL or 'info')
 
 getHttpJson = (robot, url) ->
   logger.debug "Loading", url
-  new Promise (resolve, reject) ->
+  new Q.Promise (resolve, reject) ->
     robot.http(url)
       .header('Accept', 'application/json')
       .get() (err, res, body) ->
