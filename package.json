@@ -29,6 +29,8 @@
     "hubot-shipit": "0.2.0",
     "lodash": "3.10.1",
     "handlebars": "4.0.2",
+    "promise": "^7.0.4",
+    "hubot-slack": "3.3.0",
     "log": "1.4.0"
   },
   "engines": {

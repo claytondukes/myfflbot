@@ -1,4 +1,4 @@
-Handlebars = require 'Handlebars'
+Handlebars = require 'handlebars'
 
 LIVE_SCORING_RESULTS_TEMPLATE = Handlebars.compile("""
   `Live Scoring Results`\n

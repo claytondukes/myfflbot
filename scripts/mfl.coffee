@@ -60,4 +60,4 @@ onFantasyScores = (robot, msg) ->
 module.exports = (robot) ->
   config.debug()
 
-  robot.respond /fantasyscores/i, (msg) -> onFantasyScores(robot, msg)
+  robot.respond /.*?score.*?/i, (msg) -> onFantasyScores(robot, msg)
